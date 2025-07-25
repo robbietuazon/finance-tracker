@@ -41,12 +41,12 @@ import TransactionList from "./components/TransactionList";
 import "./App.css";
 
 function App() {
+  const API = import.meta.env.VITE_API_URL;
+
   const [transactions, setTransactions] = useState([]);
 
   useEffect(() => {
-    axios
-      .get("http://localhost:4000/api/transactions")
-      .then((res) => setTransactions(res.data));
+    axios.get(`${API}/transactions`).then((res) => setTransactions(res.data));
   }, []);
 
   const handleAdd = (newTx) => {
