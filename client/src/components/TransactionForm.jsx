@@ -1,6 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
 
+const API = import.meta.env.VITE_API_URL;
+
 export default function TransactionForm({ onAdd }) {
   const [title, setTitle] = useState("");
   const [amount, setAmount] = useState("");
@@ -8,7 +10,7 @@ export default function TransactionForm({ onAdd }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!title || !amount) return;
-    const res = await axios.post("http://localhost:4000/api/transactions", {
+    const res = await axios.post(`${API}/transactions`, {
       title,
       amount: parseFloat(amount),
     });
