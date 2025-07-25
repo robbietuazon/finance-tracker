@@ -13,6 +13,7 @@ const corsOptions = {
   origin: [
     "http://localhost:5173",
     "https://finance-tracker-q63k.onrender.com",
+    "https://finance-tracker-five-wheat.vercel.app",
   ],
   credentials: true,
 };
