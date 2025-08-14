@@ -1,39 +1,55 @@
-import { useState } from "react";
+import { useForm } from "react-hook-form";
 import axios from "axios";
+import API from "../utils/api";
 
-const API = import.meta.env.VITE_API_URL;
+const TransactionForm = ({ fetchTransactions }) => {
+  const { register, handleSubmit, reset } = useForm();
 
-export default function TransactionForm({ onAdd }) {
-  const [title, setTitle] = useState("");
-  const [amount, setAmount] = useState("");
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!title || !amount) return;
-    const res = await axios.post(`${API}/transactions`, {
-      title,
-      amount: parseFloat(amount),
-    });
-    onAdd(res.data);
-    setTitle("");
-    setAmount("");
+  const onSubmit = async (data) => {
+    try {
+      await axios.post(`${API}/transactions`, data);
+      fetchTransactions();
+      reset();
+    } catch (error) {
+      console.error("Error adding transaction:", error);
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="form">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="space-y-4 bg-white p-6 rounded-xl shadow-md"
+    >
+      <h2 className="text-lg font-semibold">Add Transaction</h2>
+
       <input
-        type="text"
-        placeholder="Transaction title"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
+        {...register("title")}
+        placeholder="Title"
+        className="w-full border p-2 rounded"
+        required
       />
       <input
         type="number"
-        placeholder="Amount (₱)"
-        value={amount}
-        onChange={(e) => setAmount(e.target.value)}
+        {...register("amount")}
+        placeholder="Amount"
+        className="w-full border p-2 rounded"
+        required
       />
-      <button type="submit">Add</button>
+      <input
+        type="date"
+        {...register("date")}
+        className="w-full border p-2 rounded"
+        required
+      />
+
+      <button
+        type="submit"
+        className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 transition"
+      >
+        Add Transaction
+      </button>
     </form>
   );
-}
+};
+
+export default TransactionForm;

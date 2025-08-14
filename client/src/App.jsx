@@ -34,30 +34,14 @@
 
 // export default App
 
-import { useEffect, useState } from "react";
-import axios from "axios";
-import TransactionForm from "./components/TransactionForm";
-import TransactionList from "./components/TransactionList";
 import "./App.css";
+import Dashboard from "./pages/dashboard";
 
 function App() {
-  const API = import.meta.env.VITE_API_URL;
-
-  const [transactions, setTransactions] = useState([]);
-
-  useEffect(() => {
-    axios.get(`${API}/transactions`).then((res) => setTransactions(res.data));
-  }, []);
-
-  const handleAdd = (newTx) => {
-    setTransactions([newTx, ...transactions]);
-  };
-
   return (
-    <div className="container">
-      <h1>💰 Finance Tracker</h1>
-      <TransactionForm onAdd={handleAdd} />
-      <TransactionList transactions={transactions} />
+    <div className="container mx-auto p-4">
+      <h1 className="text-2xl font-bold mb-4">Finance Tracker</h1>
+      <Dashboard />
     </div>
   );
 }

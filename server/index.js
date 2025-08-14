@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
 import transactionRoutes from "./routes/transactions.js";
+import cardRoutes from "./routes/cards.js";
 
 dotenv.config();
 
@@ -25,6 +26,7 @@ app.use(express.json());
 
 // Routes
 app.use("/api/transactions", transactionRoutes);
+app.use("/api/cards", cardRoutes);
 
 // MongoDB Connection
 mongoose
