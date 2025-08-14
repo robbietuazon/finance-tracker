@@ -1,56 +1,66 @@
-import express from "express";
-import Card from "../models/Card.js";
+import express from 'express';
+import Card from '../models/Card.js';
 
 const router = express.Router();
 
-// CREATE a new Card
-router.post("/", async (req, res) => {
+// CREATE
+router.post('/', async (req, res) => {
   try {
     const { cardName, bankName, currency, amount, interest, type } = req.body;
-
-    console.log("Creating card with data:", cardName);
-
-    if (!cardName || !bankName || !currency || !amount || !interest || !type) {
-      return res.status(400).json({ error: "All fields are required." });
-    }
-
-    const newCard = new Card({
-      cardName,
-      bankName,
-      currency,
-      amount,
-      interest,
+    const card = new Card({
+      cardName: cardName?.trim(),
+      bankName: bankName?.trim(),
+      currency: currency?.trim(),
+      amount: parseFloat(amount),
+      interest: parseFloat(interest),
       type,
     });
-
-    await newCard.save();
-    res.status(201).json(newCard);
+    await card.save();
+    res.status(201).json(card);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Failed to create card." });
+    res.status(400).json({ error: err.message });
   }
 });
 
-// GET all Cards
-router.get("/", async (req, res) => {
+// READ
+router.get('/', async (req, res) => {
   try {
-    const cards = await Card.find();
+    const cards = await Card.find().sort({ createdAt: -1 });
     res.json(cards);
   } catch (err) {
-    res.status(500).json({ error: "Failed to fetch cards." });
+    res.status(500).json({ error: err.message });
   }
 });
 
-// DELETE a Card
-router.delete("/:id", async (req, res) => {
+// UPDATE
+router.put('/:id', async (req, res) => {
   try {
-    const deleted = await Card.findByIdAndDelete(req.params.id);
-    if (!deleted) {
-      return res.status(404).json({ error: "Card not found." });
-    }
-    res.json({ message: "Card deleted successfully." });
+    const { cardName, bankName, currency, amount, interest, type } = req.body;
+    const updatedCard = await Card.findByIdAndUpdate(
+      req.params.id,
+      {
+        cardName: cardName?.trim(),
+        bankName: bankName?.trim(),
+        currency: currency?.trim(),
+        amount: parseFloat(amount),
+        interest: parseFloat(interest),
+        type,
+      },
+      { new: true }
+    );
+    res.json(updatedCard);
   } catch (err) {
-    res.status(500).json({ error: "Failed to delete card." });
+    res.status(400).json({ error: err.message });
+  }
+});
+
+// DELETE
+router.delete('/:id', async (req, res) => {
+  try {
+    await Card.findByIdAndDelete(req.params.id);
+    res.json({ message: 'Card deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 });
 

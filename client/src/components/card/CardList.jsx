@@ -2,7 +2,7 @@
 // import axios from "axios";
 // import API from "../../utils/api";
 
-import Card from "./Card";
+import Card from './Card';
 
 // function CardList() {
 //   const [cards, setCards] = useState([]);
@@ -29,7 +29,7 @@ import Card from "./Card";
 // export default CardList;
 
 const CardList = ({ cards }) => {
-  console.log("Cards in CardList:", cards);
+  console.log('Cards in CardList:', cards);
   const totalAmount = cards.reduce((sum, card) => sum + card.amount, 0);
   return (
     <div className="space-y-4">

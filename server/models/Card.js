@@ -1,14 +1,37 @@
-// models/Card.js
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
-const cardSchema = new mongoose.Schema({
-  cardName: { type: String, required: true },
-  bankName: { type: String, required: true },
-  currency: { type: String, required: true },
-  amount: { type: Number, required: true },
-  interest: { type: Number, required: true }, // % per annum
-  type: { type: String, enum: ["debit", "credit"], required: true },
-  createdAt: { type: Date, default: Date.now },
-});
+const cardSchema = new mongoose.Schema(
+  {
+    cardName: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    bankName: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    currency: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    amount: {
+      type: Number,
+      required: true, // allows decimals
+    },
+    interest: {
+      type: Number, // percentage per annum
+      required: true, // allows decimals
+    },
+    type: {
+      type: String,
+      enum: ['debit', 'credit'],
+      required: true,
+    },
+  },
+  { timestamps: true }
+);
 
-export default mongoose.model("Card", cardSchema);
+export default mongoose.model('Card', cardSchema);

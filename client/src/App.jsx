@@ -34,13 +34,14 @@
 
 // export default App
 
-import "./App.css";
-import Dashboard from "./pages/dashboard";
+import './App.css';
+import Dashboard from './components/new/Dash';
 
 function App() {
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Finance Tracker</h1>
+      {/* <h1 className="text-2xl font-bold mb-4">Finance Tracker</h1>
+      <Dashboard /> */}
       <Dashboard />
     </div>
   );
